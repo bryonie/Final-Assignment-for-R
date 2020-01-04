@@ -155,7 +155,7 @@ ggplot(years, aes(x=Year_of_Release, y=Value, color=Region))+
     geom_point()+
     geom_line()+
     theme(legend.position="top")+
-    theme(axis.text.x = element_text(angle=60, hjust=1)) +
+    theme(axis.text.x = element_text(angle=90, hjust=1)) +
     scale_x_continuous("Year",labels = as.character(years$Year_of_Release), 
                        breaks=years$Year_of_Release)
 
@@ -164,6 +164,8 @@ ggplot(years, aes(x=Year_of_Release, y=Value, color=Region))+
 # To answer this, I will first need to create a new variable called Decade which 
 # will have 4 values, and assign each game based on their year of release to their 
 # appropriate decade. Then I'll display the results in a circular bar chart
+
+Decade <- c("2010", "2000", "1990", "1980")
 
 topglobal= gameStats %>%
     arrange(desc(Global_Sales)) %>%
@@ -195,53 +197,63 @@ pub = gameStats %>%
 
 # In this plot the highest game sales are considered the ones with more than 
 # 100 million sales
-ggplot(pub[pub$salestotal>100,], aes(x=reorder(Publisher,salestotal), y=salestotal)) +
-    geom_point(aes(color=salestotal), shape=19, size=3)+
-    scale_color_gradient(low="skyblue", high="purple")+
-    geom_segment(aes(x=Publisher, xend=Publisher, y=0,yend=salestotal, color=salestotal), 
-                 size=1) + 
+ggplot(pub[pub$salestotal>100,], aes(x=reorder(Publisher,salestotal), y=salestotal,
+fill=salestotal)) +
+    # geom_point(aes(color=salestotal), shape=19, size=3)+
+    geom_bar(stat="identity") +
+    scale_fill_gradient2(low="moccasin", high="orange")+
+    # geom_segment(aes(x=Publisher, xend=Publisher, y=0,yend=salestotal, color=salestotal), 
+                #  size=12) + 
     theme(legend.position="top")+
     labs(title="Publishers with Top Selling Games Worldwide", x= "Publisher", 
          y= "Total Global Sales in Millions")+
     theme_bw()+
-    geom_text_repel(aes(label=salestotal),size=3,data=pub[pub$salestotal>100,],
+    geom_text(aes(label=salestotal),size=3,data=pub[pub$salestotal>100,],
                     color="black")+ 
     coord_flip()
 
 
 
 
-pt1 =ggplot(pub[pub$salesjp>50,], aes(x=reorder(Publisher,salesjp), y=salesjp)) +
-    geom_point(aes(color=salesjp), shape=19, size=3)+
-    geom_segment(aes(x=Publisher, xend=Publisher,y=0,yend=salesjp,color=salesjp), size=1)+ 
+pt1 =ggplot(pub[pub$salesjp>50,], aes(x=reorder(Publisher,salesjp), y=salesjp
+    , fill=salesjp)) +
+    geom_bar(stat="identity") +
+    # geom_point(aes(color=salesjp), shape=19, size=3)+
+    # geom_segment(aes(x=Publisher, xend=Publisher,y=0,yend=salesjp,color=salesjp), size=1)+ 
     labs( x= "Publisher", y= "Total Japan Sales in Millions")+
     theme_bw()+
-    scale_color_gradient(low="skyblue", high="purple")+
+    scale_fill_gradient2(low="moccasin", high="orange")+
     coord_flip()
 
-pt2 = ggplot(pub[pub$salesna>110,], aes(x=reorder(Publisher,salesna), y=salesna)) +
-    geom_point(aes(color=salesna), shape=19, size=3)+
-    geom_segment(aes(x=Publisher, xend=Publisher,y=0,yend=salesna,color=salesna), size=1)+ 
+pt2 = ggplot(pub[pub$salesna>110,], aes(x=reorder(Publisher,salesna), y=salesna
+    , fill=salesna)) +
+    geom_bar(stat="identity") +
+    # geom_point(aes(color=salesna), shape=19, size=3)+
+    # geom_segment(aes(x=Publisher, xend=Publisher,y=0,yend=salesna,color=salesna), size=1)+ 
     labs( x= "Publisher", y= "Total North America Sales in Millions")+
     theme_bw()+
-    scale_color_gradient(low="skyblue", high="purple")+
+    scale_fill_gradient2(low="moccasin", high="orange")+
     coord_flip()
 
-pt3 = ggplot(pub[pub$saleseu>80,], aes(x=reorder(Publisher,saleseu), y=saleseu)) +
-    geom_point(aes(color=saleseu), shape=19, size=3)+
-    geom_segment(aes(x=Publisher, xend=Publisher,y=0,yend=saleseu,color=saleseu), size=1)+ 
+pt3 = ggplot(pub[pub$saleseu>80,], aes(x=reorder(Publisher,saleseu), y=saleseu
+    , fill=saleseu)) +
+    geom_bar(stat="identity") +
+    # geom_point(aes(color=saleseu), shape=19, size=3)+
+    # geom_segment(aes(x=Publisher, xend=Publisher,y=0,yend=saleseu,color=saleseu), size=1)+ 
     labs( x= "Publisher", y= "Total Europe Sales in Millions")+
     theme_bw()+
-    scale_color_gradient(low="skyblue", high="purple")+
+    scale_fill_gradient2(low="moccasin", high="orange")+
     coord_flip()
 
-pt4 =  ggplot(pub[pub$other>40,], aes(x=reorder(Publisher,other), y=other)) +
-    geom_point(aes(color=other),shape=19, size=3)+
-    geom_segment(aes(x=Publisher, xend=Publisher,y=0,yend=other,color=other),
-                 size=1)+ 
+pt4 =  ggplot(pub[pub$other>40,], aes(x=reorder(Publisher,other), y=other
+    , fill=other)) +
+    geom_bar(stat="identity") +
+    # geom_point(aes(color=other),shape=19, size=3)+
+    # geom_segment(aes(x=Publisher, xend=Publisher,y=0,yend=other,color=other),
+    #              size=1)+ 
     labs( x= "Publisher",y= "Total Sales in Other Regions in Millions")+
     theme_bw()+
-    scale_color_gradient(low="skyblue", high="purple")+
+    scale_fill_gradient2(low="moccasin", high="orange")+
     coord_flip()
 
 grid.arrange(pt1,pt2,pt3,pt4, nrow=4)
@@ -266,9 +278,9 @@ ggplot( gpub, aes(x=Genre, y=total, fill=Genre))+
     geom_bar(stat="identity") +
     facet_wrap(~Publisher, ncol=2, scale="free") +
     theme(legend.position= "none")+
-    labs(title="Total Number of Games Released per Genre for the Top 6 Publishers",
+    labs(title="Total Number of Releases per Genre from the Top 6 Publishers",
          x= "Genre", 
-         y= "Total Number of Games Released")+
+         y= "Total Number of Releases")+
     theme(axis.text.x=element_text(angle=60, hjust=1, size=8))+
     geom_text(aes(label=total), vjust=0.5,color="black", size=2.25)
 
