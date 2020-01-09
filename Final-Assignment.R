@@ -79,14 +79,105 @@ duplicated(gameStats) %>%
 
 # For this plot the Top Games are considered the ones with more than 20 million sales
 ggplot(gameStats[gameStats$Global_Sales>20,], aes(x=reorder(Name,Global_Sales), y=Global_Sales, 
-                                            fill=Platform)) +
+                                            fill=Genre)) +
     geom_bar(stat="identity")+
     theme(legend.position="top", 
     )+ #axis.text.x=element_text(angle = 50, vjust=1)
-    labs(title="Top Selling Games Globally", x= "Game and Genre", 
+    labs(title="Top Selling Games Globally", x= "Game and Platform", 
          y= "Global Sales in Millions")+
-    geom_text(aes(label=Genre), hjust= 1.1,color="black", size=2) +
+    geom_text(aes(label=Platform), hjust= 1.1,color="black", size=2) +
     coord_flip()
+
+
+### Pie Char (Fail)
+ggplot(gameStats[gameStats$Global_Sales>20,], aes(x="", y=Global_Sales, 
+fill=reorder(Name,Global_Sales))) + 
+geom_bar(stat="identity", width=1) + 
+coord_polar("y", start=0) 
+# + geom_text(aes(label = paste0(Genre)), position = position_stack(vjust = 0.5))
+
+###############################################################################
+###############################################################################
+######################## Final Plot Global Sales ##############################
+###############################################################################
+###############################################################################
+#Bar Plot
+ggplot(gameStats[gameStats$Global_Sales>20,], 
+aes(x=reorder(Name,Platform, na.last=NA), y=Platform)) +
+  geom_point(aes(col=factor(Genre)), size=3) +
+  theme(legend.position="top") +
+  labs(title="Top Selling Games Globally", 
+  x= "Game and Global Sales (in millions)", 
+  y= "Console Platform",
+  color="Genre") +
+  geom_text(aes(label=paste0(Global_Sales)), 
+  hjust= 1.1,color="black", size=2) +
+  coord_flip()
+###############################################################################
+###############################################################################
+
+
+
+###############################################################################
+###############################################################################
+########################### Final Plots Top 8 #################################
+###############################################################################
+###############################################################################
+
+# Japan Sales
+JP = ggplot(gameStats[gameStats$JP_Sales>5.33,], 
+aes(x=reorder(Name,Platform, na.last=NA), y=Platform)) +
+    #  geom_bar(stat="identity")+
+    geom_point(aes(col=factor(Genre)), size=3) +
+    labs( x= "Game and Sales (M)", 
+    y= "Japan Sales in Millions",
+    color="Genre")+
+    geom_text(aes(label=paste0(JP_Sales)), 
+    hjust=1.3, color="black", size=3)+
+    coord_flip()
+
+# North America Sales
+N_A = ggplot(gameStats[gameStats$NA_Sales>14,], 
+aes(x=reorder(Name,Platform, na.last=NA), y=Platform)) +
+    #  geom_bar(stat="identity")+
+    geom_point(aes(col=factor(Genre)), size=3) +
+    labs( x= "Game and Sales (M)", 
+    y= "North America Sales in Millions",
+    color="Genre")+
+    geom_text(aes(label=paste0(NA_Sales)), 
+    hjust=1.3, color="black", size=3)+
+    coord_flip()
+
+# Europe Sales
+EU = ggplot(gameStats[gameStats$EU_Sales>9.0,], 
+aes(x=reorder(Name,Platform, na.last=NA), y=Platform)) +
+    #  geom_bar(stat="identity")+
+    geom_point(aes(col=factor(Genre)), size=3) +
+    labs( x= "Game and Sales (M)", 
+    y= "Europe Sales in Millions",
+    color="Genre")+
+    geom_text(aes(label=paste0(EU_Sales)), 
+    hjust=1.3, color="black", size=3)+
+    coord_flip()
+
+# Other Sales
+OS = ggplot(gameStats[gameStats$Other_Sales>2.85,], 
+aes(x=reorder(Name,Platform, na.last=NA), y=Platform)) +
+    #  geom_bar(stat="identity")+
+    geom_point(aes(col=factor(Genre)), size=3) +
+    labs( x= "Game and Sales (M)", 
+    y= "Other Region Sales in Millions",
+    color="Genre")+
+    geom_text(aes(label=paste0(Other_Sales)), 
+    hjust=1.3, color="black", size=3)+
+    coord_flip()
+
+N_A
+
+grid.arrange(JP, N_A, EU, OS, nrow=4)
+###############################################################################
+###############################################################################
+
 
 # What are the top 8 games per region?
 
@@ -103,6 +194,8 @@ p2=ggplot(gameStats[gameStats$NA_Sales>14,], aes(x=reorder(Name,NA_Sales), y=NA_
     labs(x= "Game and Genre", y= "North America Sales in Millions")+
     geom_text(aes(label=Genre), hjust=1.1,color="white", size=3)+
     coord_flip()
+
+p2
 
 p3=ggplot(gameStats[gameStats$EU_Sales>9.0,], aes(x=reorder(Name,EU_Sales), y=EU_Sales, 
                                             fill=Platform)) +
